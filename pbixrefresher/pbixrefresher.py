@@ -24,7 +24,8 @@ def main():
 
 	timings.after_clickinput_wait = 1
 	#WORKBOOK = args.workbook
-	WORKBOOK = r"C:\Git\pbixrefresher-python\sample.pbix"
+	#WORKBOOK = r"C:\Git\pbixrefresher-python\sample.pbix"
+	WORKBOOK = r"C:\Git\hfd-public-outreach-survey\power_bi\Public-Outreach.pbix"
 	#WORKSPACE = args.workspace
 	WORKSPACE = "My workspace"
 	#INIT_WAIT = args.init_wait
