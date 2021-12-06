@@ -24,10 +24,11 @@ def main():
 
 	timings.after_clickinput_wait = 1
 	#WORKBOOK = args.workbook
-	#WORKBOOK = r"C:\Git\pbixrefresher-python\sample.pbix"
-	WORKBOOK = r"C:\Git\hfd-public-outreach-survey\power_bi\Public-Outreach.pbix"
+	WORKBOOK = r"C:\Git\pbixrefresher-python\sample.pbix"
+	#WORKBOOK = r"C:\Git\hfd-public-outreach-survey\power_bi\Public-Outreach.pbix"
 	#WORKSPACE = args.workspace
-	WORKSPACE = "My workspace"
+	#WORKSPACE = "My workspace"
+	WORKSPACE = "http://wit932/ReportsPowerBI"
 	#INIT_WAIT = args.init_wait
 	INIT_WAIT = 15
 	#REFRESH_TIMEOUT = args.refresh_timeout
@@ -66,22 +67,23 @@ def main():
 	time.sleep(5)
 	win.set_focus()
 
-	# Refresh
-	print("Refreshing")
-	win.Refresh.click_input()
-	#wait_win_ready(win)
-	time.sleep(5)
-	print("Waiting for refresh end (timeout in ", REFRESH_TIMEOUT,"sec)")
-	win.wait("enabled", timeout = REFRESH_TIMEOUT)
+##	# Refresh
+##	print("Refreshing")
+##	win.print_control_identifiers()
+##	win.Refresh.click_input()
+##	#wait_win_ready(win)
+##	time.sleep(5)
+##	print("Waiting for refresh end (timeout in ", REFRESH_TIMEOUT,"sec)")
+##	win.wait("enabled", timeout = REFRESH_TIMEOUT)
 
-	# Save
-	print("Saving")
-	#type_keys("%1", win)
-	#type_keys("^S", win)
-	win.Save.wait("enabled", timeout = 300)
-	#wait_win_ready(win)
-	time.sleep(5)
-	win.wait("enabled", timeout = REFRESH_TIMEOUT)
+##	# Save
+##	print("Saving")
+##	#type_keys("%1", win)
+##	#type_keys("^S", win)
+##	win.Save.wait("enabled", timeout = 300)
+##	#wait_win_ready(win)
+##	time.sleep(5)
+##	win.wait("enabled", timeout = REFRESH_TIMEOUT)
 
 	# Publish
 ##	if args.publish:
@@ -100,21 +102,80 @@ def main():
 ##		win["Got it"].wait('visible', timeout = REFRESH_TIMEOUT)
 ##		win["Got it"].click_input()
             
-                # new from https://github.com/DarknessTech/pbixrefresher2020/blob/master/pbixrefresher.py
-		print("Save and Publish")
-		win.Publish.click_input()
+##                # new from https://github.com/DarknessTech/pbixrefresher2020/blob/master/pbixrefresher.py
+##		print("Save and Publish to Cloud")
+##		win.Publish.click_input()
+##		time.sleep(10)
+##		save_dialog = win.child_window(auto_id = "modalDialog")
+##		save_dialog.Save.click_input()
+##		time.sleep(10)
+##		publish_dialog = win.child_window(auto_id = "KoPublishToGroupDialog")
+##		publish_dialog.child_window(title = WORKSPACE, found_index=1).click_input()
+##		time.sleep(10)
+##		publish_dialog.Select.click_input()
+##		time.sleep(10)
+##		replace_dialog = win.child_window(auto_id = "KoPublishWithImpactViewDialog")
+##		replace_dialog.Replace.click_input()
+##		time.sleep(300)
+		
+		print("Save and Publish to Report Server")
+##		#app.SaveAs.Save.Click()
+##		#win.MenuSelect("File -> SaveAs")
+##		win.file.wait("visible")
+##		win.file.click_input()
+##		print("clicked file")
+##		win.save.wait("visible")
+##		win.save.click_input()
+##		print("saved file")
+
+		#app.SaveAs.Save.Click()
+		#win.MenuSelect("File -> SaveAs")
+		win.file.wait("visible")
+		win.file.click_input()
+		print("clicked file")
+		win.saveas.wait("visible")
+		win.saveas.click_input()
+		print("clicked save as")
 		time.sleep(10)
-		save_dialog = win.child_window(auto_id = "modalDialog")
-		save_dialog.Save.click_input()
+		win.powerbireportserver.wait("visible")
+		win.powerbireportserver.click_input()
+		print("clicked power bi report server")
 		time.sleep(10)
-		publish_dialog = win.child_window(auto_id = "KoPublishToGroupDialog")
-		publish_dialog.child_window(title = WORKSPACE, found_index=1).click_input()
+		#publish_dialog = win.child_window(auto_id="KoSSRSSelectReportServerDialog")
+		publish_dialog = win.child_window(auto_id="modalDialog")
+		#publish_dialog = win.child_window(auto_id = "KoPublishToGroupDialog")
+		publish_dialog.child_window(title = WORKSPACE, found_index=0).click_input()
+		print("clicked dev workspace")
 		time.sleep(10)
-		publish_dialog.Select.click_input()
+		publish_dialog.ok.click_input()
+		print("clicked ok")
 		time.sleep(10)
-		replace_dialog = win.child_window(auto_id = "KoPublishWithImpactViewDialog")
-		replace_dialog.Replace.click_input()
-		time.sleep(300)
+		# need to select GIS folder
+		win.gis.click_input()
+		print("selected gis folder")
+		time.sleep(10)
+		publish_dialog.ok.click_input()
+		print("clicked ok")
+		time.sleep(10)
+		
+		#win.print_control_identifiers()
+		
+
+		
+		#win.Publish.click_input()
+##		time.sleep(10)
+##		print("saved")
+##		save_dialog = win.child_window(auto_id = "modalDialog")
+##		save_dialog.Save.click_input()
+##		time.sleep(10)
+##		publish_dialog = win.child_window(auto_id = "KoPublishToGroupDialog")
+##		publish_dialog.child_window(title = WORKSPACE, found_index=1).click_input()
+##		time.sleep(10)
+##		publish_dialog.Select.click_input()
+##		time.sleep(10)
+##		replace_dialog = win.child_window(auto_id = "KoPublishWithImpactViewDialog")
+##		replace_dialog.Replace.click_input()
+##		time.sleep(300)
 
 	#Close
 	print("Exiting")
