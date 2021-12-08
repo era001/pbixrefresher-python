@@ -29,6 +29,7 @@ def main():
 	#WORKSPACE = args.workspace
 	#WORKSPACE = "My workspace"
 	WORKSPACE = "http://wit932/ReportsPowerBI"
+	FOLDER = "GIS"
 	#INIT_WAIT = args.init_wait
 	INIT_WAIT = 15
 	#REFRESH_TIMEOUT = args.refresh_timeout
@@ -144,18 +145,30 @@ def main():
 		#publish_dialog = win.child_window(auto_id="KoSSRSSelectReportServerDialog")
 		publish_dialog = win.child_window(auto_id="modalDialog")
 		#publish_dialog = win.child_window(auto_id = "KoPublishToGroupDialog")
-		publish_dialog.child_window(title = WORKSPACE, found_index=0).click_input()
+		publish_dialog.child_window(title = WORKSPACE).click_input()
 		print("clicked dev workspace")
 		time.sleep(10)
 		publish_dialog.ok.click_input()
 		print("clicked ok")
 		time.sleep(10)
 		# need to select GIS folder
-		win.gis.click_input()
+		publish_dialog = win.child_window(auto_id="modalDialog")
+		publish_dialog.child_window(title=FOLDER).double_click_input()
 		print("selected gis folder")
 		time.sleep(10)
 		publish_dialog.ok.click_input()
 		print("clicked ok")
+		time.sleep(10)
+		# need to confirm overwrite
+##		win.print_control_identifiers()
+		overwrite_dialog = win.child_window(title="Confirm overwrite", auto_id="MessageDialog")
+		overwrite_dialog.yes.click_input()
+		
+##		replace_dialog = win.child_window(auto_id = "KoPublishWithImpactViewDialog")
+##		replace_dialog.yes.click_input()
+##		win.yes.wait("visible")
+##		win.saveas.click_input()
+		print("clicked yes to overwrite")
 		time.sleep(10)
 		
 		#win.print_control_identifiers()
