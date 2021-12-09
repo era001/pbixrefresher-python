@@ -1,0 +1,8 @@
+{
+  "workbook_path": "C:\\Git\\pbixrefresher-python\\sample.pbix",
+  "report_server": "http://wit932/ReportsPowerBI",
+  "folder1": "GIS",
+  "folder2": "",
+  "init_wait": 15,
+  "refresh_timeout": 30000
+}

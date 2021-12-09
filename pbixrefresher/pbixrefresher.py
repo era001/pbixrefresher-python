@@ -58,14 +58,14 @@ def main():
 	win.set_focus()
 
 	# Refresh
-	print("Refreshing")
+	print("Refresh Data and Save Report")
 	win.Refresh.click_input()
 	time.sleep(5)
 	print("Waiting for refresh end (timeout in ", REFRESH_TIMEOUT,"sec)")
 	win.wait("enabled", timeout = REFRESH_TIMEOUT)
 
-	# Save
-	print("Saving")
+	# Save - not working
+	print("Saving?")
 ##	win.file.wait("visible")
 ##	win.file.click_input()
 ##	print("clicked file")
@@ -85,7 +85,7 @@ def main():
 	# Publish
 ##	if args.publish:
 	if True == True:
-		print("Save and Publish to Report Server")
+		print("Save to Report Server")
 		win.file.wait("visible")
 		win.file.click_input()
 		print("clicked file")
@@ -117,10 +117,7 @@ def main():
 		overwrite_dialog.yes.click_input()
 		print("clicked yes to overwrite")
 		time.sleep(300)
-		
-		#win.print_control_identifiers()
-##		replace_dialog.Replace.click_input()
-##		time.sleep(300)
+
 
 	#Close
 	print("Exiting")
