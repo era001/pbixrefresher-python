@@ -117,25 +117,21 @@ def refresh_pbix(workbook, pbi_server, folder1, folder2="", init_wait=15, refres
             proc.kill()
 
 def main():
-    # Parse arguments from cmd
-    parser = argparse.ArgumentParser()
-    parser.add_argument("workbook", help = "Path to .pbix file")
-    parser.add_argument("--workspace", help = "name of online Power BI service work space to publish in", default = "My workspace")
-    parser.add_argument("--refresh-timeout", help = "refresh timeout", default = 30000, type = int)
-    parser.add_argument("--no-publish", dest='publish', help="don't publish, just save", default = True, action = 'store_false' )
-    parser.add_argument("--init-wait", help = "initial wait time on startup", default = 15, type = int)
-    parser.add_argument("--folder1", help = "name of folder to publish in", default = "GIS")
-    parser.add_argument("--folder2", help = "name of second folder if publishing multiple folders down from root", default = "")
-    args = parser.parse_args()
+    import json
+    
+    # import data from config file
+    config_file = r"config.json"
+    with open(config_file) as f:
+      data = json.load(f)
 
-    WORKBOOK = args.workbook
-    WORKSPACE = args.workspace
-    FOLDER1 = args.folder1
-    FOLDER2 = args.folder2
-    INIT_WAIT = args.init_wait
-    REFRESH_TIMEOUT = args.refresh_timeout
+    workbook = data["workbook_path"]
+    pbi_server = data["report_server"]
+    folder1 = data["folder1"]
+    folder2 = data["folder2"]
+    init_wait = data["init_wait"]
+    refresh_timeout = data["refresh_timeout"]
 
-    refresh_pbix(WORKBOOK, WORKSPACE, FOLDER1, FOLDER2, INIT_WAIT, REFRESH_TIMEOUT)
+    refresh_pbix(workbook, pbi_server, folder1, folder2, init_wait, refresh_timeout)
 
     
 if __name__ == '__main__':
