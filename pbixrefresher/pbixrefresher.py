@@ -24,8 +24,9 @@ def main():
 
 	timings.after_clickinput_wait = 1
 	#WORKBOOK = args.workbook
-	WORKBOOK = r"C:\Git\pbixrefresher-python\sample.pbix"
+	#WORKBOOK = r"C:\Git\pbixrefresher-python\sample.pbix"
 	#WORKBOOK = r"C:\Git\hfd-public-outreach-survey\power_bi\Public-Outreach.pbix"
+	WORKBOOK = r"C:\Git\hfd-special-operations-survey\report\Survey-Special-Operations.pbix"
 	#WORKSPACE = args.workspace
 	#WORKSPACE = "My workspace"
 	WORKSPACE = "http://wit932/ReportsPowerBI"
@@ -49,18 +50,6 @@ def main():
 	print("Waiting ",INIT_WAIT,"sec")
 	time.sleep(INIT_WAIT)
 
-##	# Connect pywinauto
-##	print("Identifying Power BI window")
-##	app = Application(backend = 'uia').connect(path = PROCNAME)
-##	win = app.window(title_re = '.*Power BI Desktop')
-##	time.sleep(5)
-##	win.wait("enabled", timeout = 300)
-##	win.Save.wait("enabled", timeout = 300)
-##	win.set_focus()
-##	win.Home.click_input()
-##	win.Save.wait("enabled", timeout = 300)
-##	win.wait("enabled", timeout = 300)
-
 	# Connect pywinauto - new from https://github.com/DarknessTech/pbixrefresher2020/blob/master/pbixrefresher.py
 	print("Identifying Power BI window")
 	app = Application(backend = 'uia').connect(path = PROCNAME)
@@ -70,22 +59,22 @@ def main():
 
 	# Refresh
 	print("Refreshing")
-	#win.print_control_identifiers()
 	win.Refresh.click_input()
-	#wait_win_ready(win)
 	time.sleep(5)
 	print("Waiting for refresh end (timeout in ", REFRESH_TIMEOUT,"sec)")
 	win.wait("enabled", timeout = REFRESH_TIMEOUT)
 
 	# Save
 	print("Saving")
-	win.file.wait("visible")
-	win.file.click_input()
-	print("clicked file")
+##	win.file.wait("visible")
+##	win.file.click_input()
+##	print("clicked file")
 	win.save.wait("visible")
 	win.save.click_input()
 	print("clicked save")
-	time.sleep(5)
+	print("Waiting for save (timeout in 300 sec)")
+	win.wait("enabled", timeout=300)
+	#time.sleep(5)
 ####	#type_keys("%1", win)
 ####	#type_keys("^S", win)
 ##	win.Save.wait("enabled", timeout = 300)
@@ -96,48 +85,7 @@ def main():
 	# Publish
 ##	if args.publish:
 	if True == True:
-##		print("Publish")
-##		win.Publish.click_input()
-##		publish_dialog = win.child_window(auto_id = "KoPublishToGroupDialog")
-##		publish_dialog.child_window(title = WORKSPACE).click_input()
-##		publish_dialog.Select.click()
-##		try:
-##			win.Replace.wait('visible', timeout = 10)
-##		except Exception:
-##			pass
-##		if win.Replace.exists():
-##			win.Replace.click_input()
-##		win["Got it"].wait('visible', timeout = REFRESH_TIMEOUT)
-##		win["Got it"].click_input()
-            
-##                # new from https://github.com/DarknessTech/pbixrefresher2020/blob/master/pbixrefresher.py
-##		print("Save and Publish to Cloud")
-##		win.Publish.click_input()
-##		time.sleep(10)
-##		save_dialog = win.child_window(auto_id = "modalDialog")
-##		save_dialog.Save.click_input()
-##		time.sleep(10)
-##		publish_dialog = win.child_window(auto_id = "KoPublishToGroupDialog")
-##		publish_dialog.child_window(title = WORKSPACE, found_index=1).click_input()
-##		time.sleep(10)
-##		publish_dialog.Select.click_input()
-##		time.sleep(10)
-##		replace_dialog = win.child_window(auto_id = "KoPublishWithImpactViewDialog")
-##		replace_dialog.Replace.click_input()
-##		time.sleep(300)
-		
 		print("Save and Publish to Report Server")
-##		#app.SaveAs.Save.Click()
-##		#win.MenuSelect("File -> SaveAs")
-##		win.file.wait("visible")
-##		win.file.click_input()
-##		print("clicked file")
-##		win.save.wait("visible")
-##		win.save.click_input()
-##		print("saved file")
-
-		#app.SaveAs.Save.Click()
-		#win.MenuSelect("File -> SaveAs")
 		win.file.wait("visible")
 		win.file.click_input()
 		print("clicked file")
@@ -149,9 +97,7 @@ def main():
 		win.powerbireportserver.click_input()
 		print("clicked power bi report server")
 		time.sleep(5)
-		#publish_dialog = win.child_window(auto_id="KoSSRSSelectReportServerDialog")
 		publish_dialog = win.child_window(auto_id="modalDialog")
-		#publish_dialog = win.child_window(auto_id = "KoPublishToGroupDialog")
 		publish_dialog.child_window(title = WORKSPACE).click_input()
 		print("clicked dev workspace")
 		time.sleep(5)
@@ -167,33 +113,12 @@ def main():
 		print("clicked ok")
 		time.sleep(5)
 		# need to confirm overwrite
-##		win.print_control_identifiers()
 		overwrite_dialog = win.child_window(title="Confirm overwrite", auto_id="MessageDialog")
 		overwrite_dialog.yes.click_input()
-		
-##		replace_dialog = win.child_window(auto_id = "KoPublishWithImpactViewDialog")
-##		replace_dialog.yes.click_input()
-##		win.yes.wait("visible")
-##		win.saveas.click_input()
 		print("clicked yes to overwrite")
-		time.sleep(5)
+		time.sleep(300)
 		
 		#win.print_control_identifiers()
-		
-
-		
-		#win.Publish.click_input()
-##		time.sleep(10)
-##		print("saved")
-##		save_dialog = win.child_window(auto_id = "modalDialog")
-##		save_dialog.Save.click_input()
-##		time.sleep(10)
-##		publish_dialog = win.child_window(auto_id = "KoPublishToGroupDialog")
-##		publish_dialog.child_window(title = WORKSPACE, found_index=1).click_input()
-##		time.sleep(10)
-##		publish_dialog.Select.click_input()
-##		time.sleep(10)
-##		replace_dialog = win.child_window(auto_id = "KoPublishWithImpactViewDialog")
 ##		replace_dialog.Replace.click_input()
 ##		time.sleep(300)
 
