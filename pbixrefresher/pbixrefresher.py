@@ -15,8 +15,10 @@ def type_keys(string, element):
 def main():   
 	# Parse arguments from cmd
 	parser = argparse.ArgumentParser()
-	parser.add_argument("workbook", help = "Path to .pbix file")
-	parser.add_argument("--workspace", help = "name of online Power BI service work space to publish in", default = "My workspace")
+	parser.add_argument("workbook", help="Path to .pbix file")
+	parser.add_argument("--pbi_server", help="Power BI Report Server to publish on", default="http://wit932/ReportsPowerBI")
+	parser.add_argument("--folder1", help="name of folder to publish in", default="")
+	parser.add_argument("--folder2", help="name of nested folder to publish in", default="")
 	parser.add_argument("--refresh-timeout", help = "refresh timeout", default = 30000, type = int)
 	parser.add_argument("--no-publish", dest='publish', help="don't publish, just save", default = True, action = 'store_false' )
 	parser.add_argument("--init-wait", help = "initial wait time on startup", default = 15, type = int)
@@ -24,7 +26,9 @@ def main():
 
 	timings.after_clickinput_wait = 1
 	WORKBOOK = args.workbook
-	WORKSPACE = args.workspace
+	PBI_SERVER = args.pbi_server
+	FOLDER1 = args.folder1
+	FOLDER2 = args.folder2
 	INIT_WAIT = args.init_wait
 	REFRESH_TIMEOUT = args.refresh_timeout
 
@@ -44,46 +48,64 @@ def main():
 
 	# Connect pywinauto
 	print("Identifying Power BI window")
-	app = Application(backend = 'uia').connect(path = PROCNAME)
+	app = Application(backend='uia').connect(path=PROCNAME)
 	win = app.window(title_re = '.*Power BI Desktop')
 	time.sleep(5)
-	win.wait("enabled", timeout = 300)
-	win.Save.wait("enabled", timeout = 300)
+	# win.wait("enabled", timeout = 300)
+	# win.Save.wait("enabled", timeout = 300)
 	win.set_focus()
-	win.Home.click_input()
-	win.Save.wait("enabled", timeout = 300)
-	win.wait("enabled", timeout = 300)
+	# win.Home.click_input()
+	# win.Save.wait("enabled", timeout = 300)
+	# win.wait("enabled", timeout = 300)
 
 	# Refresh
 	print("Refreshing")
-	win.Refresh.click_input()
+	win.RefreshButton.click_input()
 	#wait_win_ready(win)
 	time.sleep(5)
-	print("Waiting for refresh end (timeout in ", REFRESH_TIMEOUT,"sec)")
-	win.wait("enabled", timeout = REFRESH_TIMEOUT)
+	print("Waiting for refresh end (timeout in ", REFRESH_TIMEOUT, "sec)")
+	win.wait("enabled", timeout=REFRESH_TIMEOUT)
 
 	# Save
 	print("Saving")
-	type_keys("%1", win)
-	#wait_win_ready(win)
+	win.SaveButton.click_input()
 	time.sleep(5)
-	win.wait("enabled", timeout = REFRESH_TIMEOUT)
+	win.wait("enabled", timeout=REFRESH_TIMEOUT)
 
 	# Publish
 	if args.publish:
 		print("Publish")
-		win.Publish.click_input()
-		publish_dialog = win.child_window(auto_id = "KoPublishToGroupDialog")
-		publish_dialog.child_window(title = WORKSPACE).click_input()
-		publish_dialog.Select.click()
-		try:
-			win.Replace.wait('visible', timeout = 10)
-		except Exception:
-			pass
-		if win.Replace.exists():
-			win.Replace.click_input()
-		win["Got it"].wait('visible', timeout = REFRESH_TIMEOUT)
-		win["Got it"].click_input()
+		win.file.wait("visible")
+		win.file.click_input()
+		win.saveas.wait("visible")
+		win.saveas.click_input()
+		win.powerbireportserver.wait("visible")
+		win.powerbireportserver.click_input()
+		time.sleep(5)
+		publish_dialog = win.child_window(auto_id="modalDialog")
+		publish_dialog.child_window(title=PBI_SERVER).click_input()
+		time.sleep(5)
+		publish_dialog.ok.click()
+		time.sleep(5)
+		if FOLDER1 != "":
+			publish_dialog = win.child_window(auto_id="modalDialog")
+			publish_dialog.child_window(title=FOLDER1).double_click_input()
+			print(f"Selected {FOLDER1} folder")
+			time.sleep(5)
+			if FOLDER2 != "":
+				publish_dialog = win.child_window(auto_id="modalDialog")
+				publish_dialog.child_window(title=FOLDER2).double_click_input()
+				print(f"Selected {FOLDER2} folder")
+				publish_dialog.ok.click_input()
+				time.sleep(5)
+			else:
+				publish_dialog.ok.click_input()
+				time.sleep(5)
+
+		# confirm overwrite
+		overwrite_dialog = win.child_window(title="Confirm overwrite", auto_id="MessageDialog")
+		overwrite_dialog.yes.click_input()
+		time.sleep(30)
 
 	#Close
 	print("Exiting")
