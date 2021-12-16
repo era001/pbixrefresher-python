@@ -8,3 +8,4 @@ pbirsrefresher/dev_publicoutreach_config.json
 pbirsrefresher/dev_sample_config.json
 pbirsrefresher/dev_specialops_config.json
 *.log
+.idea/*
