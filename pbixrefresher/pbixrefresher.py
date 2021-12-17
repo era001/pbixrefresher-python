@@ -16,12 +16,13 @@ def main():
 	# Parse arguments from cmd
 	parser = argparse.ArgumentParser()
 	parser.add_argument("workbook", help="Path to .pbix file")
-	parser.add_argument("--pbi_server", help="Power BI Report Server to publish on", default="http://wit932/ReportsPowerBI")
+	parser.add_argument("pbi_server", help="Power BI Report Server to publish on")
 	parser.add_argument("--folder1", help="name of folder to publish in", default="")
 	parser.add_argument("--folder2", help="name of nested folder to publish in", default="")
 	parser.add_argument("--refresh-timeout", help = "refresh timeout", default = 30000, type = int)
 	parser.add_argument("--no-publish", dest='publish', help="don't publish, just save", default = True, action = 'store_false' )
 	parser.add_argument("--init-wait", help = "initial wait time on startup", default = 15, type = int)
+
 	args = parser.parse_args()
 
 	timings.after_clickinput_wait = 1
