@@ -72,6 +72,7 @@ def main():
 	win.SaveButton.click_input()
 	time.sleep(5)
 	win.wait("enabled", timeout=REFRESH_TIMEOUT)
+	win.set_focus()
 
 	# Publish
 	if args.publish:
