@@ -66,22 +66,26 @@ def main():
 	time.sleep(5)
 	print("Waiting for refresh end (timeout in ", REFRESH_TIMEOUT, "sec)")
 	win.wait("enabled", timeout=REFRESH_TIMEOUT)
+	
 
-	# Save
+	# Save - not working
 	print("Saving")
 	win.SaveButton.click_input()
-	time.sleep(5)
 	win.wait("enabled", timeout=REFRESH_TIMEOUT)
 	win.set_focus()
+	time.sleep(5)
 
 	# Publish
 	if args.publish:
 		print("Publish")
-		win.file.wait("visible")
+		time.sleep(5)
+		# win.file.wait("visible")
 		win.file.click_input()
-		win.saveas.wait("visible")
+		time.sleep(5)
+		# win.saveas.wait("visible")
 		win.saveas.click_input()
-		win.powerbireportserver.wait("visible")
+		time.sleep(5)
+		# win.powerbireportserver.wait("visible")
 		win.powerbireportserver.click_input()
 		time.sleep(5)
 		publish_dialog = win.child_window(auto_id="modalDialog")
